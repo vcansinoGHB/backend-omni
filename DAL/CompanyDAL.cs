@@ -26,7 +26,9 @@ public class CompanyDAL:ICompany
      var result = new List<CompanyModel>();
      var distinct_result = new List<CompanyModel>();
      var list_item = new List<CompanyModel>();
+     var duplicates = new List<CompanyModel>();
      char charSeparators = '|';
+     int i = 0;
 
      var response = await client.GetAsync("https://webservice.trueomni.com/json.aspx?domainid=2248&fn=listings");
 
@@ -48,7 +50,7 @@ public class CompanyDAL:ICompany
          distinct_result.AddRange(clonedList);
          distinct_result.AddRange(remainedList);
 
-         foreach (var item in distinct_result)
+         /*foreach (var item in distinct_result)
          {
              string imagenes = item.Image_List;
              if (String.IsNullOrEmpty(imagenes) == false ) {
@@ -62,9 +64,24 @@ public class CompanyDAL:ICompany
              } else {
                item.Image_List = "No image to display";
              }
-                          
-            
-         }
+         }*/
+
+         
+/*         duplicates = distinct_result
+         .GroupBy(t => 
+                t.ListingID + 
+                t.Company + 
+                t.Image_List + 
+                t.CategoryID)
+                     .Where(g => g.Count() > 1)
+                     .SelectMany(t=>t).OrderBy(t=>t.ListingID).ToList(); */
+
+         /*for (int index = 1; index < distinct_result.OrderBy(t=>t.ListingID).Count(); index++)
+         {
+           var items = duplicates.ToList();
+           Console.WriteLine("{0}",index.ToString());
+           items[index].Company = index.ToString();
+         }  */      
 
       }
        else
@@ -73,6 +90,7 @@ public class CompanyDAL:ICompany
        }
  
     return distinct_result;
+    //return duplicates;
 
    }
 
